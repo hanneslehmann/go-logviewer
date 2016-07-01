@@ -11,17 +11,13 @@ import (
 )
 
 var FileURLtesting = map[string]FileList {
-   "AccessRatesService":   FileList {Directory: "AccessRate", Path:"/tmp/*.*"},
-   "AWBStockService": FileList {Directory: "AWBStockService", Path:"/home/hannes/*.*"}}
+   "AService":   FileList {Directory: "AService", Path:"/tmp/*.*"},
+   "BService": FileList {Directory: "BService", Path:"/var/*.*"}}
 
-var basePath="/data/logs/applications/"
-var FileURLBuild  = map[string]FileList {
-      "AccessRatesService":   FileList {Directory: "AccessRate", Path: basePath+"AccessRatesService/*.*"},
-      "AWBStockService": FileList {Directory: "AWBStockService", Path: basePath+"AWBStockService/*.*"}}
+var basePath="/var/logs/"
 
 var FileURL = FileURLtesting
 var _ = FileURLtesting
-var _ = FileURLBuild
 
 type FileList struct {
   Directory string
