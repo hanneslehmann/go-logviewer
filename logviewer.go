@@ -35,7 +35,7 @@ type FileStruct struct {
 
 func createFileList(fl FileList) FileListStruct {
   var returnList FileListStruct
-  files, _ := filepath.Glob(fl.Path)
+  files, _ := filepath.Glob(basePath+fl.Path)
   for _,file := range files {
      returnList.Files=append(returnList.Files, FileStruct{filepath.Base(file),"",""})
   }
