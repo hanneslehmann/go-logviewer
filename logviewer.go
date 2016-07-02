@@ -10,14 +10,11 @@ import (
     "github.com/ActiveState/tail"
 )
 
-var FileURLtesting = map[string]FileList {
-   "AService":   FileList {Directory: "AService", Path:"/tmp/*.*"},
-   "BService": FileList {Directory: "BService", Path:"/var/*.*"}}
+var basePath="{{.basePath}}"
 
-var basePath="/var/logs/"
-
-var FileURL = FileURLtesting
-var _ = FileURLtesting
+var FileURL = map[string]FileList {
+{{range $line:=.config}} "{{$line.URL}}": FileList { Directory:"{{$line.Detail.Directory}}", Path:"{{$line.Detail.Path}}" },
+{{end}} }
 
 type FileList struct {
   Directory string
@@ -93,12 +90,13 @@ func setupRoutes(router *httprouter.Router) {
   for k, j:= range FileURL {
     router.GET("/api/logfiles/"+k, getFileIndex(j))
     router.GET("/api/logfiles/"+k+"/:file", getFile(k))
-    router.GET("/api/stream"+k+"/:file", getFileStream(k))
+    router.GET("/api/stream/"+k+"/:file", getFileStream(k))
   }
 }
 
 func main() {
     router := httprouter.New()
     setupRoutes(router)
-    log.Fatal(http.ListenAndServe(":9891", router))
+    log.Println("Listening on Port: {{.listenPort}}")
+    log.Fatal(http.ListenAndServe(":{{.listenPort}}", router))
 }
