@@ -3,10 +3,13 @@ package main
 import (
     "log"
     "fmt"
+    "os"
+    "strconv"
     "encoding/json"
     "path/filepath"
-    "github.com/julienschmidt/httprouter"
     "net/http"
+
+    "github.com/julienschmidt/httprouter"
     "github.com/ActiveState/tail"
 )
 
@@ -37,7 +40,8 @@ func createFileList(fl FileList) FileListStruct {
   var returnList FileListStruct
   files, _ := filepath.Glob(basePath+fl.Path)
   for _,file := range files {
-     returnList.Files=append(returnList.Files, FileStruct{filepath.Base(file),"",""})
+     fi, _ := os.Stat(file)
+     returnList.Files=append(returnList.Files, FileStruct{filepath.Base(file),strconv.FormatInt(fi.Size(),10),fi.ModTime().String()})
   }
   return returnList
 }
